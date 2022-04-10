@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Point Game</title>
+    <script src="script.js" type="module"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <p>场上的牌:</p>
+    <div class="table-cards"></div>
+    <div class="player-one">
+        <p>1P手上的牌:</p>
+        <div class="cards-info-one"></div>
+        <div class="index-one"></div>
+        <div class="form">
+            <label for="id-field-one">出第几张牌</label>
+            <input type="text" id="idField" class="id-field-one">
+            <input type="submit" value="确定" class="id-submit-one">
+        </div>
+        <div class="info-one">
+            <p class="play-info-one">已出的牌: </p>
+            <p class="take-info-one">拿走的牌: </p>
+            <p class="point-info-one">目前获得点数:</p>
+        </div>
+    </div>
+    <div class="player-two">
+        <p>2P手上的牌:</p>
+        <div class="cards-info-two"></div>
+        <div class="index-two"></div>
+        <div class="form">
+            <label for="id-field-two">出第几张牌</label>
+            <input type="text" id="idField" class="id-field-two">
+            <input type="submit" value="确定" class="id-submit-two">
+        </div>
+        <div class="info-two">
+            <p class="play-info-two">已出的牌: </p>
+            <p class="take-info-two">拿走的牌: </p>
+            <p class="point-info-two">目前获得点数:</p>
+        </div>
+    </div>
+
+    <p class="result"></p>
+</body>
+</html>

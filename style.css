@@ -1,0 +1,22 @@
+html {
+  font-family: sans-serif;
+}
+span {
+  margin: 0 10px;
+  display: inline-block;
+  width: 20px;
+  text-align: center;
+}
+.index-one,
+.index-two{
+  font-size: 50%;
+}
+.cards-info-two,
+.index-two{
+  visibility: hidden;
+}
+
+input[type="submit"]:disabled,
+input[type="text"]:disabled{
+  color: grey;
+}
