@@ -18,6 +18,7 @@ const CARD_VALUE_MAP = {
   }
 
 const tableCards = document.querySelector('.table-cards');
+const unfoldInfo = document.querySelector('.unfold-card');
 const resultInfo = document.querySelector('.result');
 
 const deck = new Deck();
@@ -41,78 +42,58 @@ let cardInDeck = new Deck(deck.cards.slice(32));
 renderCards(tableCards, cardsInTable.cards);
 renderCards(playerOne.cardsInfo, playerOne.handCards);
 renderCards(playerTwo.cardsInfo, playerTwo.handCards);
-refreshIndex(playerOne);
-refreshIndex(playerTwo);
+
 
 // 渲染卡牌信息
 function renderCards(node,cards){
-    // 删除所有子节点
-    while (node.firstChild) {
-      node.removeChild(node.firstChild);
-    }
-    addCard(node, cards)
-  }
-// 将卡牌信息逐个添加父节点下
-function addCard(node, cards){
-  for(let i = 0; i < cards.length; i++){
-    let child = document.createElement("span");
-    child.style.color = cards[i].color === "red"? "red" : "black";
-    child.textContent = cards[i].suit + cards[i].value + " ";
-    node.appendChild(child);
-  }
-}
-
-// 更新下标索引
-function refreshIndex(player){
-  let node = player.index;
-  let cards = player.handCards;
   // 删除所有子节点
   while (node.firstChild) {
     node.removeChild(node.firstChild);
   }
-  for(let i = 1; i <= cards.length; i++){
-    let child = document.createElement("span");
-    child.textContent = i;
+  addCard(node, cards)
+}
+
+// 将卡牌信息逐个添加父节点下
+function addCard(node, cards){
+  for(let i = 0; i < cards.length; i++){
+    let child = document.createElement('span');
+    child.style.color = cards[i].color === "red" ? "red" : "black";
+    child.textContent = cards[i].suit + cards[i].value + " ";
+    child.setAttribute('data-id',i.toString());
     node.appendChild(child);
   }
 }
 
-// 为按钮的点击事件注册监听器
-playerOne.idSubmit.addEventListener('click',function (){play(playerOne)});
-playerTwo.idSubmit.addEventListener('click',function (){play(playerTwo)});
+// 为卡牌的点击事件注册监听器
+playerOne.cardsInfo.addEventListener('click', (e) => {selectHandCard(playerOne, e)});
+playerTwo.cardsInfo.addEventListener('click', (e) => {selectHandCard(playerTwo, e)});
 
-// 设置按钮是否可用
-playerOne.idSubmit.disabled = false;
-playerOne.selectId.disabled = false;
-playerTwo.idSubmit.disabled = true;
-playerTwo.selectId.disabled = true;
-const disabledList = [playerOne.idSubmit, playerOne.selectId, playerTwo.idSubmit, playerTwo.selectId];
+function selectHandCard(player, event) {
+  let target = event.target;
+  let targetId = target.getAttribute('data-id');
+  play(player, targetId)
+
+}
 
 // 更新当前玩家和桌面的卡牌信息，并计算当前得分
-function play(player){
-    let handCardId = Number(player.selectId.value) - 1;
-    let selectHandCard = player.handCards[handCardId];
-    player.selectId.value = "";
-    // 将已出的牌记录
-    addCard(player.playInfo, [selectHandCard]);
-    player.point += match(selectHandCard, player.takeInfo);
-    // 更新手牌信息
-    player.handCards.splice(handCardId, 1);
-    renderCards(player.cardsInfo, player.handCards);
-    refreshIndex(player);
-    // 翻出一张牌
-    let drawCard = cardInDeck.pop();
-    console.log(drawCard);
-    // 更新玩家得分
-    player.point += match(drawCard, player.takeInfo);
-    player.pointInfo.textContent = "目前获得点数: " + player.point;
-    // 对手回合隐藏己方卡牌信息
-    playerOne.cardsInfo.style.visibility = player.name === "one" ? "hidden" : "visible";
-    playerOne.index.style.visibility = player.name === "one" ? "hidden" : "visible";
-    playerTwo.cardsInfo.style.visibility = player.name === "two" ? "hidden" : "visible";
-    playerTwo.index.style.visibility = player.name === "two" ? "hidden" : "visible";
-    disabledList.map(item => item.disabled = !item.disabled);
-    isEmpty();
+function play(player, handCardId){
+  let cardOfSelect = player.handCards[handCardId];
+  // 将已出的牌记录
+  addCard(player.playInfo, [cardOfSelect]);
+  player.point += match(cardOfSelect, player.takeInfo);
+  // 更新手牌信息
+  player.handCards.splice(handCardId, 1);
+  renderCards(player.cardsInfo, player.handCards);
+  // 翻出一张牌
+  let drawCard = cardInDeck.pop();
+  renderCards(unfoldInfo, [drawCard]);
+  // 更新玩家得分
+  player.point += match(drawCard, player.takeInfo);
+  player.pointInfo.textContent = "目前获得点数: " + player.point;
+  // 对手回合隐藏己方卡牌信息
+  playerOne.cardsInfo.style.visibility = player.name === "one" ? "hidden" : "visible";
+  playerTwo.cardsInfo.style.visibility = player.name === "two" ? "hidden" : "visible";
+  isEmpty();
   }
 
 // 传入指定卡牌与桌面上的牌匹配,返回点数

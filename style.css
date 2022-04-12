@@ -1,12 +1,27 @@
 html {
   font-family: sans-serif;
 }
+
 span {
+  border: solid 0.5px;
+  border-color: white;
   margin: 0 10px;
-  display: inline-block;
   width: 20px;
   text-align: center;
 }
+.cards-info-one span,
+.cards-info-two span {
+  border: solid 0.5px;
+  border-color: white;
+  margin: 0 10px;
+  width: 20px;
+  text-align: center;
+}
+.cards-info-one span:hover,
+.cards-info-two span:hover {
+  border: solid 0.5px gray;
+}
+
 .index-one,
 .index-two{
   font-size: 50%;
